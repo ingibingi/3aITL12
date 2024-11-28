@@ -1,4 +1,5 @@
 <?php
+//initialize used variables
 $gender = $weight = $height = $age = "";
 $bmr = $tdee = $pal = 0;
 $h_pal0 = $h_pal1 = $h_pal2 = $h_pal3 = $h_pal4 = $h_pal5 = 0;
@@ -27,11 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $pal = ($h_pal0 * $f_pal0 + $h_pal1 * $f_pal1 + $h_pal2 * $f_pal2 + $h_pal3 * $f_pal3 + $h_pal4 * $f_pal4 + $h_pal5 * $f_pal5) / 24;
 
-$bmr = (655.1 + 66.47) / 2;
-$f_weight = (9.6 + 13.7) / 2;
-$f_height = (1.8 + 5) / 2;
-$f_age = (4.7 + 6.8) / 2;
-//Find Factors
+
+//Find Factors relevant for gender
 if ($gender == "f") {
   $bmr = 655.1;
   $f_weight = 9.6;
@@ -44,16 +42,16 @@ if ($gender == "f") {
   $f_age = 6.8;
 } else {
   echo "Kein Geschlecht gewählt, der mittelwert sämtlicher Einzelfaktoren wird verwendet. Das Ergebnis ist vmtl. komplett daneben...";
+  $bmr = (655.1 + 66.47) / 2;
+  $f_weight = (9.6 + 13.7) / 2;
+  $f_height = (1.8 + 5) / 2;
+  $f_age = (4.7 + 6.8) / 2;
 }
 
 //Calculate BMR
 $bmr += (int)$weight * $f_weight;
 $bmr += (int)$height * $f_height;
 $bmr -= (int)$age * $f_age;
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +66,7 @@ $bmr -= (int)$age * $f_age;
 </head>
 
 <body>
-
+<!--Input BMR-Values-->
   <h1>Werte eingeben</h1>
   <form method="post">
     <h2>Für BMR</h2>
@@ -94,11 +92,11 @@ $bmr -= (int)$age * $f_age;
       <label>Alter (Jahre)</label> <input type="number" class="form-control" name="tbAge" value="<?php echo $age; ?>">
     </div>
 
-
     <div class="form-group">
       <input type="submit" class="btn btn-primary" name="btnCalculate" value="Berechnen">
     </div>
 
+<!--Input TDEE-Values-->
     <h2>Für TDEE</h2>
 
     <div class="form-group">
@@ -129,7 +127,7 @@ $bmr -= (int)$age * $f_age;
   <small>Felder markiert mit * sind Pflichtfelder.</small>
 
   <br />
-
+<!--Output Result-->
   <h1>Ergebnis</h1>
   <h2>BMR: <?php echo round($bmr) ?></h2>
   <al>Dein Basisumsatz (BMR) beträgt: <?php echo $bmr ?> kcal/Tag</p>
