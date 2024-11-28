@@ -42,10 +42,10 @@ Um abzunehmen sollten ca. 400 Kalorien weniger konsumiert werden. Beim Zunehmen 
 
 ---
 ### ToDo
-- [ ] Formular erstellen
-- [ ] Werte auslesen
-- [ ] Kalorienverbrauch berechnen und ausgeben
-- [ ] Abgeben
+- [X] Formular erstellen
+- [X] Werte auslesen
+- [X] Kalorienverbrauch berechnen und ausgeben
+- [X] Abgeben
 ## Lösung
 Screenshot ![](attachment/f5f6548028f9f51eeeab334b2595aed7.png)
 ### index.php
