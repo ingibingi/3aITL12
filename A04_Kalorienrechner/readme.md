@@ -2,9 +2,6 @@
 aliases: 
 cssclasses: 
 tags:
-  - 3aAPC
-  - ToDo/Submit
-  - ToDo/Finish
   - 3aAPC/ITL12
 date: 2024-11-26
 deadline: 
