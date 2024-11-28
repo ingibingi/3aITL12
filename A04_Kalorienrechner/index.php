@@ -3,9 +3,12 @@
   $bmr = $tdee = $pal = 0;
   $h_pal0 = $h_pal1 = $h_pal2 = $h_pal3 = $h_pal4 = $h_pal5 = 0;
   $f_weight = $f_height = $f_age = 0;
-  $usePAL = 0;
-  
-  
+  $f_pal0 = 0.95;
+  $f_pal1 = 1.2;
+  $f_pal2 = 1.375;
+  $f_pal3 = 1.55;
+  $f_pal4 = 1.725;
+  $f_pal5 = 1.9;
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Read Input Values
@@ -14,9 +17,15 @@
       $weight = isset($_POST['tbWeight']) ? (int)$_POST['tbWeight'] : 0;
       $height = isset($_POST['tbHeight']) ? (int)$_POST['tbHeight'] : 0;
       $age = isset($_POST['tbAge']) ? (int)$_POST['tbAge'] : 0;
-      $usePAL = isset($_POST['cbPAL']) ? (bool)$_POST['cbPAL'] : false;
-      
+      $h_pal1 = isset($_POST['tbPal1']) ? $_POST['tbPal1'] : 0;
+      $h_pal2 = isset($_POST['tbPal2']) ? $_POST['tbPal2'] : 0;
+      $h_pal3 = isset($_POST['tbPal3']) ? $_POST['tbPal3'] : 0;
+      $h_pal4 = isset($_POST['tbPal4']) ? $_POST['tbPal4'] : 0;
+      $h_pal5 = isset($_POST['tbPal5']) ? $_POST['tbPal5'] : 0;
+      $h_pal0 = 24-($h_pal1+$h_pal2+$h_pal3+$h_pal4+$h_pal5);
   }
+
+  $pal = ($h_pal0*$f_pal0+$h_pal1*$f_pal1+$h_pal2*$f_pal2+$h_pal3*$f_pal3+$h_pal4*$f_pal4+$h_pal5*$f_pal5)/24;
 
   // Check variables
   echo "g"; var_dump($gender);
@@ -30,7 +39,6 @@
   $f_age = (4.7+6.8)/2;
   //Find Factors
   if($gender == "f"){
-    $
     $bmr = 655.1;
     $f_weight = 9.6;
     $f_height = 1.8;
@@ -92,12 +100,7 @@
     <div class="form-group">
       <label>Alter (Jahre)</label> <input type="number" class="form-control" name="tbAge" value="<?php echo $age; ?>">
     </div>
-
-    <div class="form-group">
-
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" name="cbPAL" value="usePAL"> <label class="form-check-label">TDEE mit PAL berechnen</label>
-    </div>
+  
     
     <div class="form-group">
       <input type="submit" class="btn btn-primary" name="btnCalculate" value="Berechnen">
@@ -106,27 +109,27 @@
     <h2>Für TDEE</h2>
     
     <div class="form-group">
-      <label>Liegend (wach)</label> <input type="number" step="0.5" class="form-control" name="h_pal0" disabled value="<?php echo $h_pal0; ?>">
+      <label>Schlafend (h/Tag)</label> <input type="number" step="0.5" class="form-control" name="tbPal0" disabled value="<?php echo $h_pal0; ?>">
     </div>
 
     <div class="form-group">
-      <label>Liegend (wach)</label> <input type="number" step="0.5" class="form-control" name="h_pal1" value="<?php echo $h_pal1; ?>">
+      <label>Liegend (h/Tag)</label> <input type="number" step="0.5" class="form-control" name="tbPal1" value="<?php echo $h_pal1; ?>">
     </div>
     
     <div class="form-group">
-      <label>Liegend (wach)</label> <input type="number" step="0.5" class="form-control" name="h_pal2" value="<?php echo $h_pal2; ?>">
+      <label>Sitzend (h/Tag)</label> <input type="number" step="0.5" class="form-control" name="tbPal2" value="<?php echo $h_pal2; ?>">
     </div>
     
     <div class="form-group">
-      <label>Liegend (wach)</label> <input type="number" step="0.5" class="form-control" name="h_pal3" value="<?php echo $h_pal3; ?>">
+      <label>Stehend (h/Tag)</label> <input type="number" step="0.5" class="form-control" name="tbPal3" value="<?php echo $h_pal3; ?>">
     </div>
     
     <div class="form-group">
-      <label>Liegend (wach)</label> <input type="number" step="0.5" class="form-control" name="h_pal4" value="<?php echo $h_pal4; ?>">
+      <label>Gehend (h/Tag)</label> <input type="number" step="0.5" class="form-control" name="tbPal4" value="<?php echo $h_pal4; ?>">
     </div>
     
     <div class="form-group">
-      <label>Liegend (wach)</label> <input type="number" step="0.5" class="form-control" name="h_pal5" value="<?php echo $h_pal5; ?>">
+      <label>Laufend (h/Tag)</label> <input type="number" step="0.5" class="form-control" name="tbPal5" value="<?php echo $h_pal5; ?>">
     </div>
 
   </form>
@@ -135,11 +138,12 @@
   <br/>
 
   <h1>Ergebnis</h1>
-  <h2>BMR: <?php echo $bmr ?></h2>
-  <p>Dein Basisumsatz (BMR) beträgt: <?php echo $bmr ?></p>
+  <h2>BMR: <?php echo round($bmr) ?></h2>
+  <al>Dein Basisumsatz (BMR) beträgt: <?php echo $bmr ?> kcal/Tag</p>
   
-  <h2>TDEE</h2>
-  
+  <?php $tdee = $bmr*$pal?>
+  <h2>TDEE: <?php echo round($tdee) ?></h2> 
+  <p>Dein (custom) TDEE beträgt: <?php echo round($tdee = $bmr*$pal) ?> kcal/Tag</p>
 
   
 </body>
